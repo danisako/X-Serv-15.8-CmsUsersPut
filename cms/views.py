@@ -4,12 +4,24 @@ from .models import Pages
 from django.views.decorators.csrf import csrf_exempt
 
 
+formulario = """
+<form action = "" method ="POST">
+	Nombre: <input type="text" name="nombre" value=""><br>
+    Pagina: <input type="text" name="page" value=""><br>
+    <input type="submit" value="Enviar">
+    </form>
+"""
 
+@csrf_exempt
 def index(request):
 	if request.user.is_authenticated():
-		logged = 'Logged in as -->     ' + request.user.username + '<a href="/logout">Logout</a>'
+		logged = 'Logged in as -->     ' + request.user.username + '<a href="/logout">Logout</a></br></br>'
+		logged += formulario
+		if request.method == "POST":
+			pagina = Pages(name = request.POST['nombre'], page = request.POST['page'])
+			pagina.save()
 	else:
-		logged = 'Not logged in. Para entrar como invitado </br> (user: invitado, password: 1234) </br><a href = "/login">Login</a>'
+		logged = 'Not logged in. Entra para poder añadir páginas </br><a href = "/login">Login</a>'
 
 	respuesta = 'Para acceder a la configuración: <a href = "/admin">Configuracion</a></br></br>'
 	respuesta += logged+"<h2>Lista de páginas: </h2></br>"
@@ -40,7 +52,7 @@ def redirect(request):
 	return HttpResponse(resp)
 	
 
-@csrf_exempt
+
 
 def new_page(request,name,content):
 	if request.method == "GET":
