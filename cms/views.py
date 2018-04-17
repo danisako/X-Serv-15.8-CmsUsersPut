@@ -11,7 +11,8 @@ def index(request):
 	else:
 		logged = 'Not logged in. Para entrar como invitado </br> (user: invitado, password: 1234) </br><a href = "/login">Login</a>'
 
-	respuesta = logged+"<h2>Lista de páginas: </h2></br>"
+	respuesta = 'Para acceder a la configuración: <a href = "/admin">Configuracion</a></br></br>'
+	respuesta += logged+"<h2>Lista de páginas: </h2></br>"
 	paginas = Pages.objects.all()
 	
 	for p in paginas:
